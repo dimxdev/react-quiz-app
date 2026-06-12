@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchQuestions } from "../services/triviaApi";
 
 function QuizPage() {
   const navigate = useNavigate();
@@ -9,6 +11,20 @@ function QuizPage() {
 
     navigate("/login");
   };
+
+    useEffect(() => {
+    const getQuestions = async () => {
+      try {
+        const questions = await fetchQuestions();
+
+        console.log(questions);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getQuestions();
+  }, []);
 
   return (
     <div className="p-8">
