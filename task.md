@@ -33,14 +33,20 @@
   - `react-router-dom`
   - `axios`
 - [ ] Install **Tailwind CSS**
-- [ ] Konfigurasi Tailwind pada Vite (`tailwind.config.js` + `postcss.config.js`)
-- [ ] Tambahkan Tailwind directives ke `index.css`:
+- [ ] Konfigurasi Tailwind pada Vite
+- [ ] Tambahkan Tailwind import ke `index.css`:
 
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4 (cara terbaru) */
+@import "tailwindcss";
+
+/* Tailwind v3 (jika install dengan cara lama) */
+/* @tailwind base;        */
+/* @tailwind components;  */
+/* @tailwind utilities;   */
 ```
+
+> ⚠️ Sesuaikan dengan versi yang kamu install. Tailwind **v4** cukup satu baris `@import`. Tailwind **v3** perlu tiga baris `@tailwind`.
 
 - [ ] Push project awal ke **GitHub**
 
@@ -64,11 +70,12 @@ src/
 ├── services/
 ├── hooks/
 ├── utils/
-├── context/
-└── routes/
+└── context/
 ```
 
-- [ ] Setup routing dasar untuk:
+> 💡 Routing langsung didefinisikan di `App.jsx`, tidak perlu folder `routes/` terpisah.
+
+- [ ] Setup routing dasar di `App.jsx` untuk:
 
 ```
 /login
@@ -199,12 +206,36 @@ const decodeHTML = (str) => {
 ### Task 4.2 · Tampilkan Pilihan Jawaban
 
 - [ ] Gabungkan `correct_answer` + `incorrect_answers`
-- [ ] **Shuffle** jawaban secara acak
+- [ ] **Shuffle** jawaban menggunakan `shuffleArray()` dari utils
 
 **✅ Output:** 4 pilihan jawaban tampil acak:
 ```
 A  ·  B  ·  C  ·  D
 ```
+
+---
+
+### Task 4.2.1 · Buat Utility Shuffle
+
+📄 File: `src/utils/shuffle.js`
+
+- [ ] Buat helper function `shuffleArray()`
+- [ ] Simpan di `utils/shuffle.js`
+- [ ] Gunakan untuk mengacak urutan jawaban di Task 4.2
+
+```js
+// Fisher-Yates shuffle
+export const shuffleArray = (arr) => {
+  const shuffled = [...arr]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+```
+
+> 💡 Simpan di `utils/` agar bisa dipakai ulang di tempat lain jika dibutuhkan.
 
 ---
 
@@ -408,6 +439,18 @@ Dikerjakan  :   6
 ```
 ❌ Failed to fetch questions. Please try again.
 ```
+
+---
+
+### Task 9.2.1 · Empty State
+
+- [ ] Tampilkan pesan jika API berhasil dipanggil tapi soal kosong
+
+```
+📭 No questions available.
+```
+
+> 💡 Jarang terjadi, tapi menangani edge case ini menunjukkan perhatian terhadap kualitas UX.
 
 ---
 
