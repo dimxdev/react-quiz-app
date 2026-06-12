@@ -10,15 +10,36 @@ function QuizPage() {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
-  const currentQuestion = questions[currentQuestionIndex];
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState([]);
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("username");
 
     navigate("/login");
+  };
+
+  const handleAnswer = (selectedAnswer) => {
+    const newAnswer = {
+      question: currentQuestion.question,
+      selectedAnswer,
+      correctAnswer: currentQuestion.correct_answer,
+      isCorrect: selectedAnswer === currentQuestion.correct_answer,
+    };
+
+    setAnswers((prev) => [...prev, newAnswer]);
+
+    const isLastQuestion =
+      currentQuestionIndex === questions.length - 1;
+
+    if (isLastQuestion) {
+      console.log("Quiz Finished");
+      return;
+    }
+
+    setCurrentQuestionIndex((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -34,7 +55,7 @@ function QuizPage() {
           question: decodeHtml(question.question),
           correct_answer: decodeHtml(question.correct_answer),
           incorrect_answers: question.incorrect_answers.map((answer) =>
-            decodeHtml(answer),
+            decodeHtml(answer)
           ),
         }));
 
@@ -49,6 +70,10 @@ function QuizPage() {
 
     getQuestions();
   }, []);
+
+  useEffect(() => {
+    console.log("Answers:", answers);
+  }, [answers]);
 
   if (loading) {
     return (
@@ -73,6 +98,8 @@ function QuizPage() {
       </div>
     );
   }
+
+  const currentQuestion = questions[currentQuestionIndex];
 
   const answerOptions = shuffleArray([
     currentQuestion.correct_answer,
@@ -101,7 +128,13 @@ function QuizPage() {
 
         {/* Question Card */}
         <div className="bg-white rounded-xl shadow-lg p-6">
-          <p className="text-sm text-slate-500 mb-2">Question 1</p>
+          <p className="text-sm text-slate-500 mb-2">
+            {currentQuestionIndex + 1} of {questions.length}
+          </p>
+
+          <p className="text-sm text-slate-500 mb-4">
+            Question {currentQuestionIndex + 1}
+          </p>
 
           <h2 className="text-xl font-semibold text-slate-800">
             {currentQuestion.question}
@@ -111,6 +144,7 @@ function QuizPage() {
             {answerOptions.map((answer, index) => (
               <button
                 key={index}
+                onClick={() => handleAnswer(answer)}
                 className="w-full text-left p-4 border border-slate-300 rounded-lg hover:bg-indigo-50 hover:border-indigo-500 transition"
               >
                 {answer}
