@@ -37,11 +37,11 @@ function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 sm:p-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-slate-800">🧠 Quiz App</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">🧠 Quiz App</h1>
 
-          <p className="text-slate-500 mt-2">
+          <p className="text-slate-500 mt-2 text-sm sm:text-base">
             Welcome back! Please login to continue.
           </p>
         </div>
